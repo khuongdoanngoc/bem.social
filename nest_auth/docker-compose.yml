@@ -1,0 +1,28 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: db_auth_postgres
+    ports:
+      - ${DB_PORT}:5432 #{port in host(myPC) : (port in Container)}
+    environment: #enviroment variables, like: db's username, password...
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    networks:
+      - auth-network
+
+  nest_auth:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: auth_app
+    ports:
+      - 3000:3000
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+    # command: sh -c "npx prisma migrate dev && yarn start:dev"
+    networks:
+      - auth-network
+
+networks:
+  auth-network:
