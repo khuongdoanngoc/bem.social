@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Nextjs from "../favicon.ico";
 import Nestjs from "../../../public/nest-logo.svg";
+import Link from "next/link";
 
 export default function AuthLayout({
     children,
@@ -9,8 +10,8 @@ export default function AuthLayout({
 }>) {
     return (
         <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <a
-                href="#"
+            <Link
+                href="/"
                 className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
                 <Image
                     width={32}
@@ -19,7 +20,7 @@ export default function AuthLayout({
                     src={Nextjs}
                     alt="logo"
                 />
-                Auth App
+                AuthApp
                 <Image
                     width={32}
                     height={32}
@@ -27,7 +28,7 @@ export default function AuthLayout({
                     src={Nestjs}
                     alt="logo"
                 />
-            </a>
+            </Link>
             {children}
         </div>
     );
