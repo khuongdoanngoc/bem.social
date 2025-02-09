@@ -26,7 +26,7 @@ export default function Input({
                     error
                         ? "dark:border-red-500 fdark:ocus:ring-red-500 dark:caret-red-500 dark:text-red-500 focus:border-red-500"
                         : "text-gray-900"
-                } bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 dark:focus:outline-none focus:ring-1 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white `}
+                } bg-gray-50 border border-gray-300 rounded-lg focus:ring-primary-600 dark:focus:outline-none focus:ring-1 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white ${className}`}
                 {...props}
             />
             {error && (

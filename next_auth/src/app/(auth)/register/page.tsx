@@ -1,6 +1,5 @@
 import Button from "@/components/Button";
 import Input from "@/components/Input";
-import Image from "next/image";
 
 import Link from "next/link";
 
@@ -52,7 +51,7 @@ export default function Register() {
                     </div>
                     <Button type="submit">Register</Button>
                     <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                        Already have an account?{" "}
+                        Already have an account?
                         <Link
                             href="/login"
                             className="font-medium text-primary-600 hover:underline dark:text-primary-500">

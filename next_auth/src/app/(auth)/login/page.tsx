@@ -70,7 +70,7 @@ export default function Login() {
                     </div>
                     <Button type="submit">Login</Button>
                     <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                        Don't have an account yet?{" "}
+                        Don&apos;t have an account yet?
                         <Link
                             href="/register"
                             className="font-medium text-primary-600 hover:underline dark:text-primary-500">
