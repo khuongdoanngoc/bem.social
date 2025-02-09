@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export default function Home() {
     return (
-        <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex flex-col items-center justify-center p-4">
+        <div className="min-h-screen bg-gray-200 dark:bg-gray-900 flex flex-col items-center justify-center p-4">
             <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 max-w-2xl w-full text-center">
                 <h1 className="text-4xl font-bold text-gray-800 dark:text-gray-100 mb-6">
                     Welcome to AuthApp
