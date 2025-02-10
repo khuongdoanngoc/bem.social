@@ -11,8 +11,12 @@ export class AuthService {
     ) {}
 
     async signUp(body: signUpDTO) {
-
-        // const isExistingUser = await 
+        const isExistingUser = await this.userSerivce.findOne(body.email);
+        if (isExistingUser) {
+            return {
+                
+            }
+        }
 
         await this.userSerivce.createUser(body);
     }

@@ -26,6 +26,22 @@ export class UserService {
         return user;
     }
 
+    async findOne(email: string) {
+        const user = await this.prismaService.user.findUnique({
+            where: {
+                email,
+            },
+            select: {
+                id: true,
+                email: true,
+                firstName: true,
+                lastName: true,
+                age: true,
+            },
+        });
+        return user;
+    }
+
     async hashPassword(password: string) {
         const saltOrRounds = 10;
         return await bcrypt.hash(password, saltOrRounds);
