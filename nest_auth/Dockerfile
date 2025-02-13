@@ -12,7 +12,7 @@ RUN npx prisma generate
 
 RUN yarn run build
 
-EXPOSE 3000
+EXPOSE 4000
 
 ENV DATABASE_URL="${DATABASE_URL}"
 
