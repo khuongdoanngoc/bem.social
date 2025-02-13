@@ -1,4 +1,4 @@
-import * as bcrypt from 'bcrypt';
+import * as argon2 from 'argon2';
 import { Injectable } from '@nestjs/common';
 import { signUpDTO } from 'src/auth/dto/auth.dto';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -44,6 +44,6 @@ export class UserService {
 
     async hashPassword(password: string) {
         const saltOrRounds = 10;
-        return await bcrypt.hash(password, saltOrRounds);
+        return await argon2.hash(password);
     }
 }
