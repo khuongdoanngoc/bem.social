@@ -39,6 +39,7 @@ export class UserService {
                 age: true,
             },
         });
+        console.log('change something')
         return user;
     }
 
