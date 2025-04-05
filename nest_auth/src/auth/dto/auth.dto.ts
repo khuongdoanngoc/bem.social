@@ -6,7 +6,7 @@ import {
     MinLength,
 } from 'class-validator';
 
-export class signUpDTO {
+export class registerDTO {
     @IsEmail()
     @IsNotEmpty()
     email: string;
@@ -29,7 +29,7 @@ export class signUpDTO {
     age: number;
 }
 
-export class signInDTO {
+export class loginDTO {
     @IsEmail()
     @IsNotEmpty()
     email: string;

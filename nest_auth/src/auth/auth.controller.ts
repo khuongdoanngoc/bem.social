@@ -6,7 +6,7 @@ import {
     HttpStatus,
     Post,
 } from '@nestjs/common';
-import { signInDTO, signUpDTO } from './dto/auth.dto';
+import { registerDTO, loginDTO } from './dto/auth.dto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -14,10 +14,10 @@ export class AuthController {
     constructor(private authService: AuthService) {}
 
     @HttpCode(201)
-    @Post('sign-up')
-    async signUp(@Body() body: signUpDTO) {
+    @Post('register')
+    async register(@Body() body: registerDTO) {
         try {
-            const user = await this.authService.signUp(body);
+            const user = await this.authService.handleRegister(body);
             return {
                 statusCode: HttpStatus.CREATED,
                 message: 'User registered successfully!',
@@ -34,6 +34,6 @@ export class AuthController {
         }
     }
 
-    @Post('sign-in')
-    async signIn(@Body() body: signInDTO) {}
+    @Post('login')
+    async login(@Body() body: loginDTO) {}
 }
