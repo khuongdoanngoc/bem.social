@@ -1,35 +1,23 @@
-import Image from "next/image";
-import Nextjs from "../favicon.ico";
-import Nestjs from "../../../public/nest-logo.svg";
-import Link from "next/link";
+"use client";
 
-export default function AuthLayout({
-    children,
-}: Readonly<{
-    children: React.ReactNode;
-}>) {
+import { ReactNode } from "react";
+import { motion } from "framer-motion";
+
+interface AuthLayoutProps {
+    children: ReactNode;
+}
+
+export default function AuthLayout({ children }: AuthLayoutProps) {
     return (
-        <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
-            <Link
-                href="/"
-                className="flex items-center mb-6 text-2xl font-semibold text-gray-900 dark:text-white">
-                <Image
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 mr-2"
-                    src={Nextjs}
-                    alt="logo"
-                />
-                AuthApp
-                <Image
-                    width={32}
-                    height={32}
-                    className="w-8 h-8 ml-2"
-                    src={Nestjs}
-                    alt="logo"
-                />
-            </Link>
-            {children}
+        <div className="min-h-screen bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center p-4">
+            <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5 }}
+                className="w-full max-w-md"
+            >
+                {children}
+            </motion.div>
         </div>
     );
 }
