@@ -1,6 +1,6 @@
-# Auth Project
+# BEM Social
 
-Hệ thống quản lý xác thực người dùng được xây dựng bằng NextJS và NestJS.
+Hệ thống mạng xã hội được xây dựng với kiến trúc microservices, sử dụng NestJS cho backend và NextJS cho frontend.
 
 ## Công nghệ sử dụng
 
@@ -8,123 +8,179 @@ Hệ thống quản lý xác thực người dùng được xây dựng bằng N
 - NextJS 14
 - TypeScript
 - Tailwind CSS
-- React Query
-- Zustand (State Management)
 
 ### Backend
-- NestJS
+- NestJS (Microservices)
 - TypeScript
 - PostgreSQL
-- Prisma ORM
+- TypeORM
 - JWT Authentication
 - Bcrypt
+
+### Infrastructure
+- Docker & Docker Compose
+- Redis (caching và rate limiting)
+- API Gateway pattern
+- Microservices architecture
 
 ## Cài đặt
 
 ### Yêu cầu hệ thống
-- Node.js 18+ 
-- PostgreSQL
-- pnpm/npm/yarn
+- Node.js 18+
+- Docker & Docker Compose
+- Git
 
-### Các bước cài đặt
+### Cài đặt với Docker (khuyến nghị)
 
 1. Clone repository
 ```bash
 git clone <repository-url>
-cd auth-project
+cd bem.social
 ```
 
-2. Cài đặt dependencies cho frontend
+2. Chạy toàn bộ hệ thống với Docker Compose
 ```bash
-cd client
-pnpm install
+cd docker
+# Build các container
+docker compose build
+# Khởi động toàn bộ hệ thống
+docker compose up -d
 ```
 
-3. Cài đặt dependencies cho backend
+### Cài đặt thủ công (cho development)
+
+1. Cài đặt dependencies cho API Gateway
 ```bash
-cd server
-pnpm install
+cd api-gateway
+yarn install
+```
+
+2. Cài đặt dependencies cho Auth Service
+```bash
+cd services/auth-service
+yarn install
+```
+
+3. Cài đặt dependencies cho Frontend
+```bash
+cd clients/web
+yarn install
 ```
 
 4. Cấu hình môi trường
-   - Copy file `.env.example` thành `.env` trong cả hai thư mục `client` và `server`
+   - Copy file `.env.example` thành `.env` trong các thư mục `api-gateway` và `services/auth-service`
    - Cập nhật các biến môi trường theo cấu hình của bạn
 
-5. Khởi tạo database
+5. Khởi động PostgreSQL và Redis (có thể sử dụng Docker)
 ```bash
-cd server
-npx prisma migrate dev
+cd services/auth-service
+docker compose up -d
 ```
 
-## Chạy ứng dụng
+## Chạy ứng dụng (Development mode)
 
-### Development mode
-
-1. Chạy backend
+1. Chạy Auth Service
 ```bash
-cd server
-pnpm run dev
+cd services/auth-service
+yarn start:dev
 ```
-Backend sẽ chạy tại `http://localhost:4000`
+Auth Service sẽ chạy tại `http://localhost:3001`
 
-2. Chạy frontend
+2. Chạy API Gateway
 ```bash
-cd client
-pnpm run dev
+cd api-gateway
+yarn start:dev
+```
+API Gateway sẽ chạy tại `http://localhost:3000`
+
+3. Chạy Frontend
+```bash
+cd clients/web
+yarn dev
 ```
 Frontend sẽ chạy tại `http://localhost:3000`
 
-### Production mode
-
-1. Build và chạy backend
-```bash
-cd server
-pnpm run build
-pnpm start
-```
-
-2. Build và chạy frontend
-```bash
-cd client
-pnpm run build
-pnpm start
-```
-
 ## Tính năng
 
-- [ ] Đăng ký tài khoản
-- [ ] Đăng nhập
-- [ ] Xác thực hai yếu tố (2FA)
+- [x] Đăng ký tài khoản
+- [x] Đăng nhập
 - [ ] Quản lý profile
-- [ ] Quản lý phân quyền
-- [ ] Reset mật khẩu
+- [ ] Quản lý bài viết
+- [ ] Follow/unfollow người dùng
+- [ ] News feed
+- [ ] Thông báo realtime
+- [ ] Tìm kiếm
 
 ## Cấu trúc thư mục
 
 ```
-auth-project/
-├── client/               # Frontend NextJS
-│   ├── public/          # Static files
+bem.social/
+├── api-gateway/               # API Gateway (NestJS)
 │   ├── src/
-│   │   ├── components/  # React components
-│   │   ├── pages/      # Next.js pages
-│   │   ├── hooks/      # Custom hooks
-│   │   ├── store/      # State management
-│   │   └── types/      # TypeScript types
-│   └── package.json
+│   │   ├── config/           # Cấu hình
+│   │   ├── interfaces/       # TypeScript interfaces
+│   │   ├── guards/           # Guards (JWT, etc.)
+│   │   ├── middlewares/      # Middlewares
+│   │   └── filters/          # Exception filters
 │
-├── server/              # Backend NestJS
-│   ├── src/
-│   │   ├── modules/    # Feature modules
-│   │   ├── common/     # Shared resources
-│   │   ├── config/     # Configuration
-│   │   └── main.ts     # Entry point
-│   ├── prisma/         # Database schema
-│   └── package.json
+├── services/                  # Microservices (NestJS)
+│   ├── auth-service/         # Authentication service
+│   │   ├── src/
+│   │   │   ├── entities/     # Database entities
+│   │   │   ├── dto/          # Data Transfer Objects
+│   │   │   ├── strategies/   # Passport strategies
+│   │   │   ├── auth.service.ts
+│   │   │   └── auth.controller.ts
+│   │   │
+│   │   └── [other-services]/     # Other microservices (future)
+│   │
+│   └── [other-services]/     # Other microservices (future)
 │
-└── shared/             # Shared resources
-    └── types/          # Shared TypeScript types
+├── clients/                   # Frontend applications
+│   ├── web/                  # Web client (NextJS)
+│   │   ├── src/
+│   │   │   ├── app/          # Next.js App Router
+│   │   │   ├── components/   # React components
+│   │   │   └── lib/          # Utility functions
+│   │   │
+│   │   └── [other-clients]/     # Other clients (future)
+│   │
+│   └── [other-clients]/     # Other clients (future)
+│
+├── shared/                    # Shared code
+│   └── types/                # Shared TypeScript types
+│
+├── docker/                    # Docker configuration
+│   ├── dockerfiles/          # Dockerfiles
+│   │
+│   ├── scripts/              # Helper scripts
+│   │
+│   ├── nginx/                # Nginx configuration
+│   │
+│   └── docker-compose.yml    # Docker Compose configuration
+│
+├── kubernetes/                # Kubernetes configuration (future)
+│
+└── docs/                      # Documentation
 ```
+
+## API Gateway
+
+API Gateway đóng vai trò là điểm vào duy nhất của hệ thống, định tuyến các yêu cầu đến microservices tương ứng. API Gateway cũng xử lý xác thực JWT và authorization.
+
+## Microservices
+
+### Auth Service
+Xử lý đăng ký, đăng nhập và xác thực người dùng.
+- Endpoint: `/auth/register` - Đăng ký tài khoản mới
+- Endpoint: `/auth/login` - Đăng nhập và lấy JWT token
+
+### Các service khác (sẽ phát triển sau)
+- User Service: Quản lý thông tin người dùng
+- Post Service: Quản lý bài đăng
+- Notification Service: Xử lý thông báo
+- Feed Service: Quản lý news feed
+- Search Service: Tìm kiếm
 
 ## Contributing
 
