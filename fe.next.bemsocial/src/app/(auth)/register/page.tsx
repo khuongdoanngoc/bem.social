@@ -1,13 +1,16 @@
-import Button from "@/components/Button";
-import Input from "@/components/Input";
-import Link from "next/link";
+import Button from '@/components/Button';
+import Input from '@/components/Input';
+import Link from 'next/link';
 
 export default function Register() {
     return (
         <div className="w-full bg-white rounded-lg shadow-lg dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <div className="flex flex-col items-center mb-4">
-                    <Link href="/" className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
+                    <Link
+                        href="/"
+                        className="text-2xl font-bold text-indigo-600 dark:text-indigo-400 mb-2"
+                    >
                         BemSocial
                     </Link>
                     <h1 className="font-sans text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
@@ -60,21 +63,36 @@ export default function Register() {
                             />
                         </div>
                         <div className="ml-3 text-sm">
-                            <label
-                                htmlFor="terms"
-                                className="text-gray-500 dark:text-gray-300">
-                                I agree to the <a href="#" className="text-indigo-600 dark:text-indigo-400 hover:underline">Terms of Service</a> and <a href="#" className="text-indigo-600 dark:text-indigo-400 hover:underline">Privacy Policy</a>
+                            <label htmlFor="terms" className="text-gray-500 dark:text-gray-300">
+                                I agree to the{' '}
+                                <a
+                                    href="#"
+                                    className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                                >
+                                    Terms of Service
+                                </a>{' '}
+                                and{' '}
+                                <a
+                                    href="#"
+                                    className="text-indigo-600 dark:text-indigo-400 hover:underline"
+                                >
+                                    Privacy Policy
+                                </a>
                             </label>
                         </div>
                     </div>
-                    <Button className="w-full bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800" type="submit">
+                    <Button
+                        className="w-full bg-indigo-600 hover:bg-indigo-700 focus:ring-4 focus:ring-indigo-300 dark:focus:ring-indigo-800"
+                        type="submit"
+                    >
                         Create account
                     </Button>
                     <p className="text-sm font-light text-gray-500 dark:text-gray-400 text-center">
-                        Already have an account?{" "}
+                        Already have an account?{' '}
                         <Link
                             href="/login"
-                            className="font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+                            className="font-medium text-indigo-600 hover:underline dark:text-indigo-400"
+                        >
                             Sign in
                         </Link>
                     </p>

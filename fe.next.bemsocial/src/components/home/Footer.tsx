@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 export default function Footer() {
     return (
@@ -29,42 +29,90 @@ export default function Footer() {
                             </a>
                         </div>
                     </div>
-                    
+
                     <div>
                         <h3 className="text-white text-lg font-semibold mb-4">Platform</h3>
                         <ul className="space-y-2">
-                            <li><a href="#" className="hover:text-white">Features</a></li>
-                            <li><a href="#" className="hover:text-white">Security</a></li>
-                            <li><a href="#" className="hover:text-white">Pricing</a></li>
-                            <li><a href="#" className="hover:text-white">API</a></li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Features
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Security
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Pricing
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    API
+                                </a>
+                            </li>
                         </ul>
                     </div>
-                    
+
                     <div>
                         <h3 className="text-white text-lg font-semibold mb-4">Support</h3>
                         <ul className="space-y-2">
-                            <li><a href="#" className="hover:text-white">Documentation</a></li>
-                            <li><a href="#" className="hover:text-white">Tutorials</a></li>
-                            <li><a href="#" className="hover:text-white">Contact Us</a></li>
-                            <li><a href="#" className="hover:text-white">FAQ</a></li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Documentation
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Tutorials
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Contact Us
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    FAQ
+                                </a>
+                            </li>
                         </ul>
                     </div>
-                    
+
                     <div>
                         <h3 className="text-white text-lg font-semibold mb-4">Legal</h3>
                         <ul className="space-y-2">
-                            <li><a href="#" className="hover:text-white">Terms of Service</a></li>
-                            <li><a href="#" className="hover:text-white">Privacy Policy</a></li>
-                            <li><a href="#" className="hover:text-white">Cookies</a></li>
-                            <li><a href="#" className="hover:text-white">GDPR</a></li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Terms of Service
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Privacy Policy
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    Cookies
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" className="hover:text-white">
+                                    GDPR
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </div>
-                
+
                 <div className="border-t border-gray-800 mt-12 pt-8 text-center">
                     <p>&copy; {new Date().getFullYear()} BemSocial. All rights reserved.</p>
                 </div>
             </div>
         </footer>
     );
-} 
+}

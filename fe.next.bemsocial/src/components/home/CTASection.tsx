@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { motion } from "framer-motion";
-import Button from "@/components/Button";
+import Link from 'next/link';
+import { motion } from 'framer-motion';
+import Button from '@/components/Button';
 
 export default function CTASection() {
     return (
-        <motion.section 
+        <motion.section
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -33,4 +33,4 @@ export default function CTASection() {
             </div>
         </motion.section>
     );
-} 
+}
