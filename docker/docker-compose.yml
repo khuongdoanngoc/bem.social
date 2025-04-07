@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+  # Frontend
+  frontend:
+    build:
+      context: ../clients/web
+      dockerfile: Dockerfile
+    container_name: bem_social_frontend
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+      - NEXT_PUBLIC_API_URL=http://api-gateway:3000
+    depends_on:
+      - api-gateway
+    networks:
+      - bem_social_network
+    restart: unless-stopped
+
+  # API Gateway
+  api-gateway:
+    build:
+      context: ../api-gateway
+      dockerfile: ../docker/dockerfiles/api-gateway.Dockerfile
+    container_name: bem_social_api_gateway
+    ports:
+      - "3001:3000"
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=bem_social
+      - JWT_SECRET=your-secret-key
+      - JWT_EXPIRATION=1d
+      - AUTH_SERVICE_URL=auth-service:3001
+      - USER_SERVICE_URL=user-service:3002
+      - POST_SERVICE_URL=post-service:3003
+      - NOTIFICATION_SERVICE_URL=notification-service:3004
+      - FEED_SERVICE_URL=feed-service:3005
+      - SEARCH_SERVICE_URL=search-service:3006
+    depends_on:
+      - postgres
+      - redis
+      - auth-service
+    networks:
+      - bem_social_network
+    restart: unless-stopped
+
+  # Auth Service
+  auth-service:
+    build:
+      context: ../services/auth-service
+      dockerfile: ../../docker/dockerfiles/auth-service.Dockerfile
+    container_name: bem_social_auth_service
+    ports:
+      - "3002:3001"
+    environment:
+      - NODE_ENV=development
+      - PORT=3001
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USERNAME=postgres
+      - DB_PASSWORD=postgres
+      - DB_DATABASE=bem_social_auth
+      - JWT_SECRET=your-secret-key
+      - JWT_EXPIRATION=1d
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      - postgres
+      - redis
+    networks:
+      - bem_social_network
+    restart: unless-stopped
+
+  # User Service (sẽ implement sau)
+  # user-service:
+  #   build:
+  #     context: ../services/user-service
+  #     dockerfile: ../../docker/dockerfiles/user-service.Dockerfile
+  #   container_name: bem_social_user_service
+  #   ports:
+  #     - "3002:3002"
+  #   environment:
+  #     - NODE_ENV=development
+  #     - PORT=3002
+  #     - DB_HOST=postgres
+  #     - DB_PORT=5432
+  #     - DB_USERNAME=postgres
+  #     - DB_PASSWORD=postgres
+  #     - DB_DATABASE=bem_social_user
+  #     - JWT_SECRET=your-secret-key
+  #     - JWT_EXPIRATION=1d
+  #     - REDIS_HOST=redis
+  #     - REDIS_PORT=6379
+  #   depends_on:
+  #     - postgres
+  #     - redis
+  #   networks:
+  #     - bem_social_network
+  #   restart: unless-stopped
+
+  # Database
+  postgres:
+    image: postgres:14
+    container_name: bem_social_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_MULTIPLE_DATABASES: bem_social,bem_social_auth,bem_social_user,bem_social_post,bem_social_notification,bem_social_feed,bem_social_search
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./scripts/create-multiple-postgresql-databases.sh:/docker-entrypoint-initdb.d/create-multiple-postgresql-databases.sh
+    networks:
+      - bem_social_network
+    restart: unless-stopped
+
+  # Redis (for caching và rate limiting)
+  redis:
+    image: redis:7
+    container_name: bem_social_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - bem_social_network
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
+  redis_data:
+
+networks:
+  bem_social_network:
+    driver: bridge 
