@@ -4,16 +4,21 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Transport } from '@nestjs/microservices';
+import { ConfigService } from '@nestjs/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  const configService = app.get(ConfigService);
   
-  // Cấu hình microservice
+  // Cấu hình microservice với RabbitMQ
   app.connectMicroservice({
-    transport: Transport.TCP,
+    transport: Transport.RMQ,
     options: {
-      host: '0.0.0.0',
-      port: 3001,
+      urls: [configService.get<string>('RABBITMQ_URL')],
+      queue: configService.get<string>('RABBITMQ_AUTH_QUEUE'),
+      queueOptions: {
+        durable: false
+      },
     },
   });
 
@@ -40,5 +45,6 @@ async function bootstrap() {
   const port = process.env.PORT || 3001;
   await app.listen(port);
   console.log(`Auth Service is running on: http://localhost:${port}`);
+  console.log(`Auth Service RabbitMQ consumer started on queue: ${configService.get<string>('RABBITMQ_AUTH_QUEUE')}`);
 }
 bootstrap();

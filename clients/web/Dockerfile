@@ -33,5 +33,3 @@ ENV NODE_ENV=production
 
 # Câu lệnh chạy Next.js
 CMD ["npm", "run", "start"]
-
-
