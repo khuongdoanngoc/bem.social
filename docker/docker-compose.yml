@@ -42,10 +42,13 @@ services:
       - NOTIFICATION_SERVICE_URL=notification-service:3004
       - FEED_SERVICE_URL=feed-service:3005
       - SEARCH_SERVICE_URL=search-service:3006
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_AUTH_QUEUE=auth_queue
     depends_on:
       - postgres
       - redis
       - auth-service
+      - rabbitmq
     networks:
       - bem_social_network
     restart: unless-stopped
@@ -70,9 +73,12 @@ services:
       - JWT_EXPIRATION=1d
       - REDIS_HOST=redis
       - REDIS_PORT=6379
+      - RABBITMQ_URL=amqp://rabbitmq:5672
+      - RABBITMQ_AUTH_QUEUE=auth_queue
     depends_on:
       - postgres
       - redis
+      - rabbitmq
     networks:
       - bem_social_network
     restart: unless-stopped
@@ -108,20 +114,19 @@ services:
   postgres:
     image: postgres:14
     container_name: bem_social_postgres
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_MULTIPLE_DATABASES: bem_social,bem_social_auth,bem_social_user,bem_social_post,bem_social_notification,bem_social_feed,bem_social_search
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=bem_social
     volumes:
       - postgres_data:/var/lib/postgresql/data
-      - ./scripts/create-multiple-postgresql-databases.sh:/docker-entrypoint-initdb.d/create-multiple-postgresql-databases.sh
     networks:
       - bem_social_network
     restart: unless-stopped
 
-  # Redis (for caching và rate limiting)
+  # Redis
   redis:
     image: redis:7
     container_name: bem_social_redis
@@ -133,9 +138,26 @@ services:
       - bem_social_network
     restart: unless-stopped
 
+  # RabbitMQ
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: bem_social_rabbitmq
+    ports:
+      - "5672:5672"   # AMQP protocol port
+      - "15672:15672" # Management UI port
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - bem_social_network
+    restart: unless-stopped
+
 volumes:
   postgres_data:
   redis_data:
+  rabbitmq_data:
 
 networks:
   bem_social_network:

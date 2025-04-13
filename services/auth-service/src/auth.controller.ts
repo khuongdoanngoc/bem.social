@@ -3,6 +3,7 @@ import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import { MessagePattern } from '@nestjs/microservices';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -17,12 +18,22 @@ export class AuthController {
     return this.authService.register(registerDto);
   }
 
+  @MessagePattern('auth.register')
+  async registerMicroservice(registerDto: RegisterDto) {
+    return this.authService.register(registerDto);
+  }
+
   @Post('login')
   @HttpCode(HttpStatus.OK)
   @ApiOperation({ summary: 'Đăng nhập' })
   @ApiResponse({ status: 200, description: 'Đăng nhập thành công' })
   @ApiResponse({ status: 401, description: 'Email hoặc mật khẩu không đúng' })
   async login(@Body() loginDto: LoginDto) {
+    return this.authService.login(loginDto);
+  }
+
+  @MessagePattern('auth.login')
+  async loginMicroservice(loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
 } 

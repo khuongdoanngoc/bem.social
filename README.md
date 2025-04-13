@@ -20,6 +20,7 @@ Hệ thống mạng xã hội được xây dựng với kiến trúc microservi
 ### Infrastructure
 - Docker & Docker Compose
 - Redis (caching và rate limiting)
+- RabbitMQ (communication giữa các microservices)
 - API Gateway pattern
 - Microservices architecture
 
@@ -79,6 +80,12 @@ docker compose up -d
 
 ## Chạy ứng dụng (Development mode)
 
+0. Chạy RabbitMQ (yêu cầu cho communication giữa các microservices)
+```bash
+docker run -d --name rabbitmq -p 5672:5672 -p 15672:15672 rabbitmq:3-management
+```
+RabbitMQ Management UI sẽ chạy tại `http://localhost:15672` (guest/guest)
+
 1. Chạy Auth Service
 ```bash
 cd services/auth-service
@@ -91,7 +98,7 @@ Auth Service sẽ chạy tại `http://localhost:3001`
 cd api-gateway
 yarn start:dev
 ```
-API Gateway sẽ chạy tại `http://localhost:3000`
+API Gateway sẽ chạy tại `http://localhost:8000`
 
 3. Chạy Frontend
 ```bash
