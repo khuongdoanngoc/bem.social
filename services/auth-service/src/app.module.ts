@@ -1,32 +1,16 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { User } from './entities/user.entity';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
   imports: [
     // Cấu hình môi trường
     ConfigModule.forRoot({
       isGlobal: true,
-    }),
-    // Cấu hình database
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        type: 'postgres',
-        host: configService.get('DB_HOST'),
-        port: +configService.get<number>('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('DB_DATABASE'),
-        entities: [User],
-        synchronize: configService.get('NODE_ENV') !== 'production',
-      }),
-      inject: [ConfigService],
     }),
     // Cấu hình JWT
     JwtModule.registerAsync({
@@ -39,10 +23,10 @@ import { User } from './entities/user.entity';
       }),
       inject: [ConfigService],
     }),
-    // Đăng ký TypeORM repository cho User
-    TypeOrmModule.forFeature([User]),
+    // Prisma Module
+    PrismaModule,
   ],
-  controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  controllers: [AppController],
+  providers: [AppService, JwtStrategy],
 })
 export class AppModule {}
