@@ -5,6 +5,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Transport } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
+import { AllExceptionsFilter } from './filters/http-exception.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -30,6 +31,9 @@ async function bootstrap() {
     whitelist: true,
     transform: true,
   }));
+
+  // Cấu hình global exception filter
+  app.useGlobalFilters(new AllExceptionsFilter());
 
   // Cấu hình Swagger
   const config = new DocumentBuilder()
